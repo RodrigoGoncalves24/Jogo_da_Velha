@@ -1,8 +1,9 @@
 import java.util.Scanner;
 
 /**
- * Ajustar check de vitória
- * Ajustar contagem da vitória em Tabuleiro
+ * Ajustar check de vitória - funcioando
+ * Ajustar contagem da vitória em Tabuleiro - ajustado e funcionando
+ * Ajustar "percorreDiagonal"
  * Checagem de erros de entrada pelo usuário - ÚLTIMO
  * */
 

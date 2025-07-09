@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Tabuleiro {
     private final String[][] tabuleiro = new String[5][3];
     private final ArrayList<Double> coordenadas = new ArrayList<>(Arrays.asList(0.0, 2.0, 4.0, 0.1, 2.1, 4.1, 0.2, 2.2, 4.2));
-   // private final ArrayList<Double> naoDiagonal = new ArrayList<>(Arrays.asList(0.1, 2.2, 4.1, 2.0));
+    private final ArrayList<Double> naoDiagonal = new ArrayList<>(Arrays.asList(0.1, 2.2, 4.1, 2.0));
     private static int coordX;
     private static int coordY;
     private static double coordOriginal;
@@ -74,24 +74,19 @@ public class Tabuleiro {
             troca();
             restauraDir();
         }
-
-
     }
 
     public boolean eVitoria() {
-        if(vitoria == 3) return true;
-        else {
-            vitoria++;
-            return false;
-        }
+        return vitoria == 3;
     }
 
     // Loop quando verifica as coord do meio
     public void percorreLado() {
         if (tabuleiro[coordX][coordY].contains(XouO)) {
+            vitoria++;
             lados();
             if (!eVitoria()){
-                if (!checkLados() && coordExiste(coordX, coordY + 1)) coordY += 1; // verifica se a posição não foi visitada e se ela existe
+                if (!check(coordY, 'y') && coordExiste(coordX, coordY + 1)) coordY += 1; // verifica se a posição não foi visitada e se ela existe
                 else coordY -= 1;// verificando se existe posição na esquerda
                 percorreLado();
             }
@@ -121,20 +116,20 @@ public class Tabuleiro {
     }
 
     // Identifica se lado já foi visitado para poder ir para a próxima -- retorna true or false
-    private boolean checkLados(){
-        int i = coordY +1; // verifica se a coordenada da frente já foi visitada
-        if(i>= 3) {
-            return coordLado[2];
-        }else return coordLado[i];
+    private boolean check(int coordenada, char c){
+        int i = coordenada +1; // verifica se a coordenada da frente já foi visitada
+        if (i >= 3) i = 2;
+        if (c == 'y') return coordLado[i];
+        else return coordCimaBaixo[i];
     }
-
 
     // Não percorrer diagonal quando coord for baixo
     public void percorreCimaBaixo() {
         if (tabuleiro[coordX][coordY].contains(XouO)) {
+            vitoria++;
             cimaBaixo();
             if (!eVitoria()){
-                if (!checkCimaBaixo() && coordExiste(coordX + 2, coordY)) coordX += 2;
+                if (!check(coordX, 'x') && coordExiste(coordX + 2, coordY)) coordX += 2;
                 else coordX -= 2;
                 percorreCimaBaixo();
             }
@@ -142,6 +137,7 @@ public class Tabuleiro {
         }
         restauraCoord();
         vitoria = 0;
+        if(naoDiagonal.contains(coordOriginal))percorreDiagonal();
     }
 
     private void cimaBaixo(){
@@ -161,12 +157,6 @@ public class Tabuleiro {
         }
     }
 
-    private boolean checkCimaBaixo(){
-        int i = coordX +1;
-        if(i >= 3){
-            return coordCimaBaixo[2];
-        }else return coordCimaBaixo[i];
-    }
 
     // Arrumar metodo
     public void percorreDiagonal() {
