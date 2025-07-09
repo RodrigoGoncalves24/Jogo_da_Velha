@@ -9,20 +9,19 @@ import java.util.Scanner;
 
 public class Main {
     public static Scanner in = new Scanner(System.in);
-    private static String nome, op, jogada;
     private static Jogador j1, j2;
-    public static double coord;
 
     public static void main(String[] args) {
         Tabuleiro tabuleiro = new Tabuleiro();
         tabuleiro.geraTabuleiro();
+        double coord;
 
         jogadores();
 
         System.out.println("\n\n");
         System.out.println("Começaremos pelo X: "+(j1.getXouO().equalsIgnoreCase("X")?j1.getNome():j2.getNome()));
 
-        while(!tabuleiro.eVitoria()){
+        while(tabuleiro.eVitoria()){
             tabuleiro.geraTabuleiro();
             System.out.println("Insira a coordenada a ser jogada: (Ex: 0,0)");
             try {
@@ -40,6 +39,7 @@ public class Main {
     }
 
     private static void jogadores(){
+        String nome, op;
         System.out.println("Bem vindo ao jogo da velha!");
         System.out.println("Insira os jogadores: ");
 
