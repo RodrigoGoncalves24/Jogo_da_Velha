@@ -21,7 +21,7 @@ public class Main {
         System.out.println("\n\n");
         System.out.println("Começaremos pelo X: "+(j1.getXouO().equalsIgnoreCase("X")?j1.getNome():j2.getNome()));
 
-        while(tabuleiro.eVitoria()){
+        while(!tabuleiro.eVitoria()){
             tabuleiro.geraTabuleiro();
             System.out.println("Insira a coordenada a ser jogada: (Ex: 0,0)");
             try {
@@ -36,6 +36,8 @@ public class Main {
         }
 
         System.out.println("\nVitória: "+tabuleiro.jogadaVez());
+        tabuleiro.geraTabuleiro();
+
     }
 
     private static void jogadores(){

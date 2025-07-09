@@ -69,9 +69,12 @@ public class Tabuleiro {
         }
 
         percorreLado();
-        if (!eVitoria()) vitoria = 0;
-        troca();
-        restauraDir();
+        if (!eVitoria()) {
+            vitoria = 0;
+            troca();
+            restauraDir();
+        }
+
 
     }
 
@@ -92,6 +95,7 @@ public class Tabuleiro {
                 else coordY -= 1;// verificando se existe posição na esquerda
                 percorreLado();
             }
+            return;
         }
         restauraCoord();
         vitoria = 0;
@@ -134,6 +138,7 @@ public class Tabuleiro {
                 else coordX -= 2;
                 percorreCimaBaixo();
             }
+            return;
         }
         restauraCoord();
         vitoria = 0;
@@ -157,7 +162,7 @@ public class Tabuleiro {
     }
 
     private boolean checkCimaBaixo(){
-        int i = coordY +1;
+        int i = coordX +1;
         if(i >= 3){
             return coordCimaBaixo[2];
         }else return coordCimaBaixo[i];
