@@ -11,11 +11,13 @@ public class Tabuleiro {
     private static double coordOriginal;
     private static String XouO = "X";
     private static int vitoria = 0;
+    private static int index = 0;
     private static boolean tabuleiroGerado = false;
 
     //Evita loop nas verificações
     private static final boolean [] coordLado = new boolean[3];
     private static final boolean [] coordCimaBaixo = new boolean[3];
+    private static final boolean [] coordDiagonal = new boolean[5];
 
     private void tabuleiro() {
         tabuleiro[0][0] = "  0.0 |";
@@ -84,7 +86,7 @@ public class Tabuleiro {
     public void percorreLado() {
         if (tabuleiro[coordX][coordY].contains(XouO)) {
             vitoria++;
-            lados();
+            verificaVisitados(coordY, 'y');
             if (!eVitoria()){
                 if (!check(coordY, 'y') && coordExiste(coordX, coordY + 1)) coordY += 1; // verifica se a posição não foi visitada e se ela existe
                 else coordY -= 1;// verificando se existe posição na esquerda
@@ -98,21 +100,41 @@ public class Tabuleiro {
     }
 
     // Indica que a posição já foi visitada, tirando a chance de verificar ela novamente
-    private void lados(){
-        switch (coordY){
-            case 0:{
-                coordLado[0] = true;
-                break;
+    private void verificaVisitados(int coord, char c){
+        if(c == 'x'){
+            switch (coord){
+                case 0:{
+                    coordLado[0] = true;
+                    break;
+                }
+                case 1:{
+                    coordLado[1] = true;
+                    break;
+                }
+                case 2:{
+                    coordLado[2] = true;
+                    break;
+                }
             }
-            case 1:{
-                coordLado[1] = true;
-                break;
-            }
-            case 2:{
-                coordLado[2] = true;
-                break;
+        }else{
+            switch (coord){
+                case 0:{
+                    coordCimaBaixo[0] = true;
+                    break;
+                }
+                case 2:{
+                    coordCimaBaixo[1] = true;
+                    break;
+                }
+                case 4:{
+                    coordCimaBaixo[2] = true;
+                    break;
+                }
             }
         }
+
+
+
     }
 
     // Identifica se lado já foi visitado para poder ir para a próxima -- retorna true or false
@@ -127,7 +149,7 @@ public class Tabuleiro {
     public void percorreCimaBaixo() {
         if (tabuleiro[coordX][coordY].contains(XouO)) {
             vitoria++;
-            cimaBaixo();
+            verificaVisitados(coordX, 'x');
             if (!eVitoria()){
                 if (!check(coordX, 'x') && coordExiste(coordX + 2, coordY)) coordX += 2;
                 else coordX -= 2;
@@ -137,42 +159,50 @@ public class Tabuleiro {
         }
         restauraCoord();
         vitoria = 0;
-        if(naoDiagonal.contains(coordOriginal))percorreDiagonal();
-    }
-
-    private void cimaBaixo(){
-        switch (coordX){
-            case 0:{
-                coordCimaBaixo[0] = true;
-                break;
-            }
-            case 2:{
-                coordCimaBaixo[1] = true;
-                break;
-            }
-            case 4:{
-                coordCimaBaixo[2] = true;
-                break;
-            }
-        }
+        if(!naoDiagonal.contains(coordOriginal)) percorreDiagonal();
     }
 
 
-    // Arrumar metodo
+
+    // Arrumar metodo -- problema com a contagem da vitória
     public void percorreDiagonal() {
-        if (tabuleiro[coordX + 2][coordY + 1].contains(XouO)) {
+        if (tabuleiro[coordX][coordY].contains(XouO)) {
             vitoria++;
-            if (coordExiste(coordX + 2, coordY + 1)) {
-                coordX += 2;
-                coordY += 1;
-            } else {
-                coordX -= 2;
-                coordY -= 1;
+            verificaVisitadosDiagonal(coordX, coordY);
+            if (!eVitoria()){
+                if (!checkDiagonal() && coordExiste(coordX + 2, coordY+1)) {
+                    coordX += 2;
+                    coordY += 1;
+                }else{
+                    coordX -= 2;
+                    coordY -= 1;
+                }
+                percorreDiagonal();
             }
-            vitoria = 0;
-            percorreDiagonal();
+            return;
         }
         restauraCoord();
+        vitoria = 0;
+    }
+
+    public boolean checkDiagonal(){
+        index +=1;
+        if(index == 4) return coordDiagonal[3];
+        return coordDiagonal[index];
+    }
+
+    public void verificaVisitadosDiagonal(int c1, int c2) {
+        if(c1 == 0 && c2 == 0){
+            coordDiagonal[0] = true;
+        }else if(c1 == 0 && c2 == 2){
+            coordDiagonal[1] = true;
+        }else if(c1 == 2 && c2 == 1){
+            coordDiagonal[2] = true;
+        }else if(c1 == 4 && c2 == 0){
+            coordDiagonal[3] = true;
+        }else if(c1 == 4 && c2 == 2){
+            coordDiagonal[4] = true;
+        }
     }
 
 
