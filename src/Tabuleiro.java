@@ -60,7 +60,7 @@ public class Tabuleiro {
         try {
             // Ajustar a troca dos caracteres
             if (coordenadas.contains(coord)) {
-                if (!(tabuleiro[coordX][coordY].equals("X") || tabuleiro[coordX][coordY].equals("O"))) {
+                if (!(tabuleiro[coordX][coordY].contains("X") || tabuleiro[coordX][coordY].contains("O"))) {
                     tabuleiro[coordX][coordY] = "   " + XouO + "  " + (coordY < 2 ? "|" : "");
                 } else {
                     System.out.println("Jogada inválida: " + (Objects.equals(tabuleiro[coordX][coordY], "X") ? "X" : "O"));
@@ -90,6 +90,8 @@ public class Tabuleiro {
             if (!eVitoria()) {
                 if (!check(coordY, 'y') && coordExiste(coordX, coordY + 1)) coordY += 1; // verifica se a posição não foi visitada e se ela existe
                 else coordY -= 1;// verificando se existe posição na esquerda
+                System.out.println("Visitando (" + coordX + "," + coordY + ") - vitoria=" + vitoria);
+
                 percorreLado();
             }
             return;
@@ -107,11 +109,11 @@ public class Tabuleiro {
                     coordCimaBaixo[0] = true;
                     break;
                 }
-                case 1: {
+                case 2: {
                     coordCimaBaixo[1] = true;
                     break;
                 }
-                case 2: {
+                case 4: {
                     coordCimaBaixo[2] = true;
                     break;
                 }
@@ -122,11 +124,11 @@ public class Tabuleiro {
                     coordLado[0] = true;
                     break;
                 }
-                case 2: {
+                case 1: {
                     coordLado[1] = true;
                     break;
                 }
-                case 4: {
+                case 2: {
                     coordLado[2] = true;
                     break;
                 }
@@ -144,7 +146,7 @@ public class Tabuleiro {
         else return coordCimaBaixo[i];
     }
 
-    // Não percorrer diagonal quando coord for baixo
+    // Ajustar
     public void percorreCimaBaixo() {
         if (tabuleiro[coordX][coordY].contains(XouO)) {
             vitoria++;
@@ -152,6 +154,8 @@ public class Tabuleiro {
             if (!eVitoria()) {
                 if (!check(coordX, 'x') && coordExiste(coordX + 2, coordY)) coordX += 2;
                 else coordX -= 2;
+                System.out.println("Visitando (" + coordX + "," + coordY + ") - vitoria=" + vitoria);
+
                 percorreCimaBaixo();
             }
             return;
@@ -180,21 +184,25 @@ public class Tabuleiro {
                     coordY -= 1;
                 } else if (x == 2 && y == 1) { // restaurar a coordenada de onde ele veio para saber para onde vai
                     restauraCoord();
-                    if(coordX == 0 && coordY == 0 || coordX ==2 && coordY == 1){ // caso ele tenha começado no centro, manda pra uma direção
-                        x += 2;
-                        y += 1;
+                    if(coordX == 0 && coordY == 0 ){ // caso ele tenha começado no centro, manda pra uma direção
+                        x = 4;
+                        y = 2;
                     }else if(coordX == 0 && coordY == 2){
-                        x +=2;
-                        y -= 1;
+                        x = 4;
+                        y = 0;
                     }else if (coordX == 4 && coordY == 0){
-                        x -= 2;
-                        y += 1;
+                        x = 0;
+                        y = 2;
                     }else if(coordX == 4 && coordY == 2){
-                        x -= 2;
-                        y -= 1;
+                        x = 0;
+                        y = 0;
+                    }else{
+                        x = 0;
+                        y = 0;
                     }
                     coordX = x;
                     coordY = y;
+
                 } else if (x == 4 && y == 0) { // leva para o meio do canto inferior esquerdo
                     coordX -= 2;
                     coordY += 1;
@@ -202,6 +210,8 @@ public class Tabuleiro {
                     coordX -= 2;
                     coordY -= 1;
                 }
+                System.out.println("Visitando (" + coordX + "," + coordY + ") - vitoria=" + vitoria);
+
                 percorreDiagonal();
             }
             return;
@@ -216,8 +226,8 @@ public class Tabuleiro {
         if (coordX == 0 && coordY == 2) return coordDiagonal[3];
         if (coordX == 4 && coordY == 0) return coordDiagonal[1];
         if (coordX == 4 && coordY == 2) return coordDiagonal[0];
-        return  coordDiagonal[2];
-
+        if (coordX == 2 && coordY == 1) return coordDiagonal[0] && coordDiagonal[1] && coordDiagonal[3] && coordDiagonal[4] ;
+        return true;
     }
 
     public void verificaVisitadosDiagonal(int c1, int c2) {

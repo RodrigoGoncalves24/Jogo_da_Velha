@@ -3,8 +3,12 @@ import java.util.Scanner;
 /**
  * Ajustar check de vitória - funcioando
  * Ajustar contagem da vitória em Tabuleiro - ajustado e funcionando
- * Ajustar "percorreDiagonal"
- * Problemmas com coordenddas 0,2
+ * Ajustar "percorreDiagonal" - funcionando
+ * Problemmas com coordenddas 0,2 - corrigido
+ * Testar possíveis jogadas de vitória e empate
+ * Validar e fazer os pequenos ajustes de cada jogada
+ *
+ *
  * Checagem de erros de entrada pelo usuário - ÚLTIMO
  * */
 
