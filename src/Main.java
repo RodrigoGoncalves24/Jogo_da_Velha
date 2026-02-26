@@ -39,6 +39,7 @@ public class Main {
             System.out.println("Jogada da vez: "+ tabuleiro.jogadaVez());
         }
 
+        tabuleiro.troca(); // Como é trocado o jogador após a última jogada, retono para o anterior da vitória
         System.out.println("\nVitória: "+tabuleiro.jogadaVez());
         tabuleiro.geraTabuleiro();
 
