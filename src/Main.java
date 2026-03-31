@@ -1,16 +1,5 @@
 import java.util.Scanner;
 
-/**
- * Ajustar check de vitória - funcioando
- * Ajustar contagem da vitória em Tabuleiro - ajustado e funcionando
- * Ajustar "percorreDiagonal" - funcionando
- * Problemmas com coordenddas 0,2 - corrigido
- * Testar possíveis jogadas de vitória e empate
- * Validar e fazer os pequenos ajustes de cada jogada
- * Checagem de erros de entrada pelo usuário - ÚLTIMO
- * */
-
-
 public class Main {
     public static Scanner in = new Scanner(System.in);
     private static Jogador j1, j2;
@@ -39,7 +28,7 @@ public class Main {
             System.out.println("Jogada da vez: "+ tabuleiro.jogadaVez());
         }
 
-        tabuleiro.troca(); // Como é trocado o jogador após a última jogada, retono para o anterior da vitória
+        tabuleiro.troca();
         System.out.println("\nVitória: "+tabuleiro.jogadaVez());
         tabuleiro.geraTabuleiro();
 
@@ -54,7 +43,7 @@ public class Main {
         nome = in.nextLine();
         System.out.print("Escolha entre X ou O: ");
         op = in.nextLine();
-        j1 = new Jogador(nome, op, 0);
+        j1 = new Jogador(nome, op);
 
         System.out.println();
 
@@ -62,7 +51,7 @@ public class Main {
         nome = in.nextLine();
         if(j1.getXouO().equalsIgnoreCase("X")) op = "O";
         else op = "X";
-        j2 = new Jogador(nome, op, 0);
+        j2 = new Jogador(nome, op);
     }
 
 }

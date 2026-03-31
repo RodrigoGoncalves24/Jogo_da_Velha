@@ -66,13 +66,13 @@ public class Tabuleiro {
         }
     }
 
-    //Marcar uma jogada no tabuleiro
+    /// Mark a play
     public void jogada(double coord) {
         coordOriginal = coord;
         coordX = (int) coord;
         coordY = (int) Math.round((coord - coordX) * 10);
         try {
-            if (coordenadas.contains(coord)) { /// Jogar em uma local onde já há uma jogada
+            if (coordenadas.contains(coord)) {
                 if (!(tabuleiro[coordX][coordY].contains("X") || tabuleiro[coordX][coordY].contains("O"))) {
                     tabuleiro[coordX][coordY] = "   " + XouO + "  " + (coordY < 2 ? "|" : "");
                 } else {
@@ -83,29 +83,29 @@ public class Tabuleiro {
             System.out.println("Erro ao jogar! Tente novamente!");
         }
 
-        //preencher o array do jogador
+        /// Fill the player array
         if (jogadaVez().equals("X")) {
             jogadas[0][pos] = (coordOriginal);
         } else {
             jogadas[1][pos] = (coordOriginal);
-            pos++; // Como o jogo começa em X, é seguro incrementar apenas quando for a vez do O. Não pula posição
+            pos++;
         }
 
         verificaJogadas();
         troca();
     }
 
+    /// With the arrays of moves, check the currency of possibilities victory
     public void verificaJogadas() {
-        //Verificar onde esta essa coordenada, em qual dos arrays
         possivelJogada = new ArrayList<>();
         possivelJogada();
 
-        //pegar o array/s e verificar a primeira posição, se não houver, pula para próximo  (MARCA ARRAY E PERCORRE DO 0 A 2 MESMO SABENDO QUE UMA POSIÇÃ É CERTA)
         int jogador;
 
         if (jogadaVez().equals("X")) jogador = 0;
         else jogador = 1;
 
+        /// Verify, among the possibilities of that play, where there could be marking
         for (double[] doubles : possivelJogada) {
             for (int j = 0; j < 3; j++) {
                 if (doubles[j] == jogadas[jogador][j]) {
@@ -119,8 +119,8 @@ public class Tabuleiro {
         }
     }
 
-    //preenche o array de jogadas -> A partir da coordenada jogada, separa quais são as possíveis jogadas que pode haver uma vitória
-    public void possivelJogada() {
+    /// Populates the array of moves — based on the selected coordinate, determines the possible moves that could lead to a win.
+    private void possivelJogada() {
         for (double[] coordVitoria : coordVitorias) {
             for (int j = 0; j < 3; j++) {
                 if (coordVitoria[j] == coordOriginal) {
@@ -131,6 +131,7 @@ public class Tabuleiro {
         }
     }
 
+    /// Check the currency of vitoria
     public boolean eVitoria() {
         return vitoria == 3;
     }
