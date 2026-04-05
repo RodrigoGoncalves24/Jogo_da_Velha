@@ -6,6 +6,7 @@ public class Tabuleiro {
     private final String[][] tabuleiro = new String[5][3];
     private final ArrayList<Double> coordenadas = new ArrayList<>(Arrays.asList(0.0, 2.0, 4.0, 0.1, 2.1, 4.1, 0.2, 2.2, 4.2));
     private static ArrayList<double[]> possivelJogada;
+    private static int quantidadeJogadasLivres = 9;
     private static double[][] jogadas = {
             {0.0, 0.0, 0.0, 0.0, 0.0},
             {0.0, 0.0, 0.0, 0.0, 0.0}
@@ -92,6 +93,7 @@ public class Tabuleiro {
         }
 
         verificaJogadas();
+        quantidadeJogadasLivres--;
         troca();
     }
 
@@ -136,15 +138,26 @@ public class Tabuleiro {
         return vitoria == 3;
     }
 
+    /// Change player
     public void troca() {
         if (XouO.equals("X")) XouO = "O";
         else XouO = "X";
     }
 
+    /// Return the player
     public String jogadaVez() {
         return XouO;
     }
 
+    /// Return true if the array of coordinates contains the player coordinate
+    public boolean contains(double coord){
+        return coordenadas.contains(coord);
+
+    }
+
+    public boolean ahJogada(){
+        return quantidadeJogadasLivres == 0;
+    }
 
 }
 
